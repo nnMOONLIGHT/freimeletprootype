@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Фреймлёт — творческая экосистема</title>
+  <link rel="icon" href="/static/img/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- ===== РЕГИСТРАЦИЯ ===== -->
+<div id="loginScreen" class="login-shell">
+  <aside class="login-side">
+    <div>
+      <img src="/static/img/logo.png" alt="Фреймлёт" class="logo-big">
+      <div class="login-hero-text">
+        <p class="faint" style="color:#8b8fd4;font-size:12px;letter-spacing:.12em;text-transform:uppercase">Творческая экосистема</p>
+        <h1>Пространство, где увлечение становится профессией</h1>
+        <button type="button" class="btn entry-btn entry-btn--dark" onclick="focusRegister()">
+          <span class="entry-glyph" aria-hidden="true"></span>
+          <span class="entry-label">Вход через услуги</span>
+        </button>
+        <p class="entry-hint">Откроется регистрация: ФИО, возраст, регион и согласие — данные сразу в личном кабинете.</p>
+      </div>
+    </div>
+    <div class="login-feats">
+      <div class="login-feat">
+        <div class="f-icon">📝</div>
+        <div><b>Регистрация за 2 минуты</b><p>ФИО, возраст, регион — и ты уже в сообществе.</p></div>
+      </div>
+      <div class="login-feat">
+        <div class="f-icon">👨‍👩‍👧</div>
+        <div><b>Согласие родителя</b><p>Для участников до 18 лет — скачай шаблон и загрузи подпись.</p></div>
+      </div>
+      <div class="login-feat">
+        <div class="f-icon">🚀</div>
+        <div><b>От витрины к стажировке</b><p>Баллы, рейтинг и AI-стилист открывают путь к партнёрам.</p></div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="login-main">
+    <div class="login-box">
+      <div class="login-mobile-brand hide-desktop">
+        <img src="/static/img/logo.png" alt="Фреймлёт" class="logo-mobile">
+      </div>
+      <button type="button" class="btn entry-btn entry-btn--light block hide-desktop" onclick="focusRegister()">
+        <span class="entry-glyph" aria-hidden="true"></span>
+        <span class="entry-label">Вход через услуги</span>
+      </button>
+      <p class="entry-hint hide-desktop">Без очереди: заполни профиль и начни публиковать работы.</p>
+      <div class="step-dots"><i class="on"></i><i></i><i></i></div>
+
+      <!-- Шаг 1: роль -->
+      <div id="regStep1">
+        <h2 style="margin:0 0 6px">Кто вы?</h2>
+        <p class="muted" style="margin:0 0 8px">Выберите роль для регистрации</p>
+        <div class="role-grid">
+          <button type="button" class="role sel" data-role="school" onclick="selectRole(this)">
+            <b>Школьник 14–17</b><span>Портфолио и челленджи</span>
+          </button>
+          <button type="button" class="role" data-role="student" onclick="selectRole(this)">
+            <b>Студент 18+</b><span>Колледж / вуз</span>
+          </button>
+          <button type="button" class="role" data-role="parent" onclick="selectRole(this)">
+            <b>Родитель</b><span>Контроль и согласия</span>
+          </button>
+          <button type="button" class="role" data-role="partner" onclick="selectRole(this)">
+            <b>Партнёр</b><span>Стажировки и найм</span>
+          </button>
+        </div>
+        <div id="roleNotice" class="notice" style="margin-bottom:16px">Если тебе меньше 18 — после регистрации родителю нужно загрузить согласие.</div>
+        <button class="btn primary block" onclick="regStep(2)">Далее</button>
+        <p style="text-align:center;margin-top:20px;font-size:13px" class="muted">
+          Уже есть аккаунт? <a href="#" onclick="regStep(99);return false" style="color:var(--lav-deep);font-weight:700">Войти</a>
+        </p>
+      </div>
+
+      <!-- Шаг 2: данные -->
+      <div id="regStep2" class="hide">
+        <h2 style="margin:0 0 6px">Регистрация</h2>
+        <p class="muted">ФИО, возраст и регион — данные сохраняются в личном кабинете</p>
+        <label class="field-label">ФИО</label>
+        <input class="field" id="regName" placeholder="Иванов Иван Иванович">
+        <label class="field-label">Возраст</label>
+        <input class="field" id="regAge" type="number" min="14" max="99" placeholder="16">
+        <label class="field-label">Регион</label>
+        <input class="field" id="regRegion" placeholder="Екатеринбург">
+        <label class="field-label">Email</label>
+        <input class="field" id="regEmail" type="email" placeholder="mail@example.com">
+        <label class="field-label">Пароль</label>
+        <input class="field" id="regPass" type="password" placeholder="минимум 6 символов">
+        <div class="consent-dl" onclick="downloadConsent()">📄 Скачать шаблон согласия родителя</div>
+        <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px;margin:12px 0">
+          <input type="checkbox" id="consentCheck">
+          <span>Подтверждаю согласие на обработку данных и правила платформы</span>
+        </label>
+        <div style="display:flex;gap:10px">
+          <button class="btn line" onclick="regStep(1)">Назад</button>
+          <button class="btn primary" style="flex:1" onclick="regStep(3)">Далее</button>
+        </div>
+      </div>
+
+      <!-- Шаг 3: направления -->
+      <div id="regStep3" class="hide">
+        <h2 style="margin:0 0 6px">Что тебе интересно?</h2>
+        <p class="muted">Выбери направления — подборка и челленджи будут точнее</p>
+        <div class="dir-pick" id="dirPick"></div>
+        <button class="btn primary block" id="regSubmit" onclick="submitRegister()">Зарегистрироваться</button>
+        <button class="btn line block" style="margin-top:10px" onclick="regStep(2)">Назад</button>
+      </div>
+
+      <!-- Вход -->
+      <div id="regStep99" class="hide">
+        <h2 style="margin:0 0 6px">Вход</h2>
+        <input class="field" id="loginEmail" type="email" placeholder="Email">
+        <input class="field" id="loginPass" type="password" placeholder="Пароль">
+        <button class="btn primary block" onclick="doLogin()">Войти</button>
+        <button class="btn line block" style="margin-top:10px" onclick="regStep(1)">Создать аккаунт</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== ПРИЛОЖЕНИЕ ===== -->
+<div id="app" class="app hide" style="display:none">
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="/static/img/logo.png" alt="">
+      <div>Фреймлёт<span>твои работы · твои правила</span></div>
+    </div>
+    <nav class="nav">
+      <button data-view="home" class="active">🏠 Главная</button>
+      <button data-view="works">🎨 Работы</button>
+      <button data-view="videos">▶ Лента видео</button>
+      <button data-view="market">🛒 Маркетплейс</button>
+      <button data-view="challenges">🎯 Челленджи</button>
+      <button data-view="rating">🏆 Рейтинг</button>
+      <button data-view="internships">💼 Стажировки</button>
+      <button data-view="ai">✨ AI-стилист</button>
+      <button data-view="profile">👤 Профиль</button>
+    </nav>
+    <div class="side-spacer"></div>
+    <div class="side-card">
+      <b>Статус аккаунта</b>
+      <div class="badge warning" id="sideStatusBadge">—</div>
+      <p id="sideStatusText" style="margin:8px 0 0;font-size:12px">—</p>
+    </div>
+    <button class="side-logout" onclick="doLogout()">↩ Выйти</button>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-brand hide-mobile">
+        <img src="/static/img/logo.png" class="mobile-logo" alt="">
+        <span>Фреймлёт</span>
+      </div>
+      <div class="search-wrap">
+        <input class="search" placeholder="Поиск работ, авторов, челленджей…">
+      </div>
+      <div class="topbar-right">
+        <button class="btn primary sm" onclick="openUpload()">+ Работа</button>
+        <div class="profile-mini">
+          <div class="avatar u-initial">А</div>
+          <div><span class="u-name">—</span><small class="u-age-dir">—</small></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <!-- Главная -->
+      <section id="home" class="view active section">
+        <div class="hero">
+          <div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+              <span class="badge">14–18 лет</span><span class="badge neutral">Вся Россия</span>
+            </div>
+            <h1>Покажи, что умеешь. Собери свой путь.</h1>
+            <p>Публикуй работы, участвуй в челленджах, смотри ленту видео и учись у экспертов.</p>
+            <div class="hero-actions">
+              <button class="btn primary" onclick="openUpload()">Добавить работу</button>
+              <button class="btn ghost" style="background:rgba(255,255,255,.15);color:#fff" onclick="go('ai')">AI-стилист</button>
+            </div>
+          </div>
+          <div class="hero-card">
+            <span class="muted">Прогресс сезона</span>
+            <div style="display:flex;align-items:center;gap:14px;margin:10px 0">
+              <div style="font-family:var(--font-d);font-weight:800;font-size:28px" id="heroPct">—</div>
+              <div><b id="heroPoints">0</b> баллов<br><span class="faint">до нового уровня</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section" style="margin-top:28px">
+          <div class="toolbar"><h2>Направления</h2></div>
+          <div class="bento">
+            <div class="card direction" style="--accent:var(--lav)"><b>Дизайн</b><span class="muted">UI · типографика</span></div>
+            <div class="card direction" style="--accent:var(--sky)"><b>3D</b><span class="muted">Модели · motion</span></div>
+            <div class="card direction" style="--accent:var(--danger)"><b>Fashion</b><span class="muted">Одежда · аксессуары</span></div>
+            <div class="card direction" style="--accent:var(--mint)"><b>Ремесло</b><span class="muted">Керамика · текстиль</span></div>
+            <div class="card direction" style="--accent:var(--warning)"><b>Медиа</b><span class="muted">Фото · видео</span></div>
+            <div class="card direction" style="--accent:#a855f7"><b>Музыка</b><span class="muted">Тексты · вокал</span></div>
+          </div>
+        </div>
+
+        <div class="feed section">
+          <div class="card ai-promo">
+            <b>AI-стилист</b>
+            <p class="muted">Загрузи фото — нейросеть определит стиль, увлечения и подберёт одежду.</p>
+            <button class="btn primary sm" onclick="go('ai')">Открыть</button>
+          </div>
+          <div class="card" style="padding:20px">
+            <b>Лента видео</b>
+            <p class="muted">Творчество из VK, YouTube и RuTube</p>
+            <button class="btn ghost sm" onclick="go('videos')">Смотреть →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Работы -->
+      <section id="works" class="view section">
+        <div class="toolbar">
+          <h2>Работы сообщества</h2>
+          <button class="btn primary sm" onclick="openUpload()">Загрузить</button>
+        </div>
+        <div class="filters">
+          <button class="chip on">Все</button>
+          <button class="chip">Дизайн</button>
+          <button class="chip">Fashion</button>
+          <button class="chip">3D</button>
+        </div>
+        <div class="grid cols-3" id="worksGrid"></div>
+      </section>
+
+      <!-- Лента видео -->
+      <section id="videos" class="view section">
+        <div class="toolbar"><h2>Лента видео</h2><span class="muted">Творчество из соцсетей</span></div>
+        <div class="filters" id="videoFilters">
+          <button class="chip on" onclick="filterVideos(this,'all')">Все</button>
+          <button class="chip" onclick="filterVideos(this,'design')">Дизайн</button>
+          <button class="chip" onclick="filterVideos(this,'fashion')">Fashion</button>
+          <button class="chip" onclick="filterVideos(this,'3d')">3D</button>
+          <button class="chip" onclick="filterVideos(this,'craft')">Ремесло</button>
+          <button class="chip" onclick="filterVideos(this,'media')">Медиа</button>
+        </div>
+        <div class="video-grid" id="videoGrid"></div>
+      </section>
+
+      <!-- Маркетплейс -->
+      <section id="market" class="view section">
+        <div class="toolbar"><h2>Маркетплейс</h2></div>
+        <div class="card" style="padding:24px">
+          <h3 style="margin:0 0 8px">Продавай изделия по всей стране</h3>
+          <p class="muted">Ozon · Wildberries · ПВЗ — модерация и логистика через платформу.</p>
+          <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+            <div class="card" style="padding:16px;flex:1;min-width:180px"><b>Кружка «Рассвет»</b><br>1 290 ₽</div>
+            <div class="card" style="padding:16px;flex:1;min-width:180px"><b>Шоппер «Узор»</b><br>2 450 ₽</div>
+            <div class="card" style="padding:16px;flex:1;min-width:180px"><b>Серьги «Орбита»</b><br>890 ₽</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Челленджи -->
+      <section id="challenges" class="view section">
+        <div class="toolbar"><h2>Челленджи</h2><span class="badge">+30 баллов</span></div>
+        <div class="grid cols-2">
+          <div class="card challenge-card" style="--accent:var(--lav)"><span class="badge">Дизайн</span><h3>Новый шрифт для города</h3><p class="muted">Типографический постер региона</p><button class="btn ghost sm" onclick="participate()">Участвовать</button></div>
+          <div class="card challenge-card" style="--accent:var(--danger)"><span class="badge">Fashion</span><h3>Вторая жизнь вещи</h3><p class="muted">Апсайклинг старой вещи</p><button class="btn ghost sm" onclick="participate()">Участвовать</button></div>
+          <div class="card challenge-card" style="--accent:var(--sky)"><span class="badge">3D</span><h3>Персонаж будущего</h3><p class="muted">Модель + история</p><button class="btn ghost sm" onclick="participate()">Участвовать</button></div>
+          <div class="card challenge-card" style="--accent:var(--warning)"><span class="badge">Медиа</span><h3>60 секунд о городе</h3><p class="muted">Вертикальный ролик</p><button class="btn ghost sm" onclick="participate()">Участвовать</button></div>
+        </div>
+      </section>
+
+      <!-- Рейтинг -->
+      <section id="rating" class="view section">
+        <div class="toolbar"><h2>Рейтинг направлений</h2></div>
+        <div class="card" style="padding:8px 16px">
+          <div class="leader-row top1"><span class="leader-rank">1</span><div class="avatar" style="width:36px;height:36px">Е</div><div class="leader-name"><b>Ева К.</b><span>Санкт-Петербург</span></div><span class="leader-pts">1 240</span></div>
+          <div class="leader-row top2"><span class="leader-rank">2</span><div class="avatar" style="width:36px;height:36px">Р</div><div class="leader-name"><b>Роман Т.</b><span>Москва</span></div><span class="leader-pts">1 105</span></div>
+          <div class="leader-row top3"><span class="leader-rank">3</span><div class="avatar" style="width:36px;height:36px">А</div><div class="leader-name"><b>Алекс, ты</b><span class="u-region">—</span></div><span class="leader-pts u-points">740</span></div>
+        </div>
+      </section>
+
+      <!-- Стажировки -->
+      <section id="internships" class="view section">
+        <div class="toolbar"><h2>Стажировки · 16+</h2></div>
+        <div class="grid cols-2">
+          <div class="card" style="padding:18px"><span class="badge">Удалённо</span><h3>Контент-дизайн</h3><p class="muted">4 недели · портфолио</p><button class="btn primary sm" onclick="applyIntern()">Откликнуться</button></div>
+          <div class="card" style="padding:18px"><span class="badge">Казань</span><h3>Мастерская аксессуаров</h3><p class="muted">Подготовка коллекции</p><button class="btn primary sm" onclick="applyIntern()">Откликнуться</button></div>
+        </div>
+      </section>
+
+      <!-- AI -->
+      <section id="ai" class="view section">
+        <div class="toolbar"><h2>AI-стилист</h2><span class="badge">своя нейросеть</span></div>
+        <div class="grid cols-2">
+          <div class="card" style="padding:22px">
+            <h3 style="margin:0 0 12px">Загрузи фото</h3>
+            <div class="upload-zone" id="aiDrop">
+              <div style="font-size:32px;margin-bottom:8px">📷</div>
+              <p><b>Перетащи изображение</b><br><span class="muted">или нажми · JPG / PNG / WEBP</span></p>
+              <input type="file" id="aiFile" accept="image/*" hidden>
+            </div>
+            <p class="faint" style="font-size:12px;margin-top:12px">AI анализирует стиль и материалы, не внешность человека. Данные несовершеннолетних не сохраняются без согласия.</p>
+          </div>
+          <div class="card" style="padding:22px" id="aiResult">
+            <h3 style="margin:0 0 8px">Результат анализа</h3>
+            <p class="muted">После загрузки появятся стиль, увлечения, палитра и рекомендации по одежде.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Профиль -->
+      <section id="profile" class="view section">
+        <div class="profile-grid">
+          <div class="card profile-head">
+            <div class="avatar u-initial" style="width:64px;height:64px;font-size:24px">А</div>
+            <div>
+              <h2 style="margin:0" class="u-full">—</h2>
+              <p class="muted u-age-dir">—</p>
+              <p class="faint u-region">—</p>
+            </div>
+          </div>
+          <div class="card" style="padding:18px">
+            <div class="stat-row"><span>Баллы сезона</span><b id="profPoints">0</b></div>
+            <div class="stat-row"><span>Работ опубликовано</span><b id="profWorks">0</b></div>
+            <div class="stat-row"><span>Челленджей</span><b id="profChallenges">0</b></div>
+          </div>
+        </div>
+        <div class="notice warn" id="consentCard" style="margin:18px 0"></div>
+        <div class="card" style="padding:18px;margin-top:18px">
+          <b>Журнал активности</b>
+          <div id="activityLog" style="margin-top:12px"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Мобильная навигация -->
+  <nav class="mobile-nav">
+    <button data-view="home" class="active" onclick="go('home')">🏠<br>Главная</button>
+    <button data-view="works" onclick="go('works')">🎨<br>Работы</button>
+    <button data-view="ai" onclick="go('ai')">✨<br>AI</button>
+    <button data-view="videos" onclick="go('videos')">▶<br>Видео</button>
+    <button onclick="openSheet()">☰<br>Ещё</button>
+  </nav>
+</div>
+
+<!-- Sheet -->
+<div class="sheet-overlay" id="sheetOverlay" onclick="if(event.target===this)closeSheet()">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <button onclick="sheetGo('market')">🛒 Маркетплейс</button>
+    <button onclick="sheetGo('challenges')">🎯 Челленджи</button>
+    <button onclick="sheetGo('rating')">🏆 Рейтинг</button>
+    <button onclick="sheetGo('internships')">💼 Стажировки</button>
+    <button onclick="sheetGo('profile')">👤 Профиль</button>
+    <button onclick="closeSheet()">Закрыть</button>
+  </div>
+</div>
+
+<!-- Модалка работы -->
+<div class="modal" id="uploadModal">
+  <div class="modalbox">
+    <h3>Новая работа</h3>
+    <input class="field" id="workTitle" placeholder="Название">
+    <select class="field" id="workDir">
+      <option value="design">Дизайн</option>
+      <option value="fashion">Fashion</option>
+      <option value="3d">3D</option>
+      <option value="craft">Ремесло</option>
+      <option value="media">Медиа</option>
+    </select>
+    <textarea class="field" id="workDesc" placeholder="Описание"></textarea>
+    <div style="display:flex;gap:10px">
+      <button class="btn primary" onclick="submitWork()">Отправить</button>
+      <button class="btn line" onclick="closeModal('uploadModal')">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastText"></span></div>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
